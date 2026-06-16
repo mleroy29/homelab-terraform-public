@@ -1,0 +1,13 @@
+# Proxmox API Gateway Endpoint Configuration
+proxmox_api_url      = "https://10.0.0.10:8006/api2/json"
+proxmox_api_token_id = "terraform-prov@pve!automation"
+
+# Security Identity Vectors
+ssh_public_key_ansible         = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdummykeyansibleautomation"
+ssh_private_key_path_terraform = "/home/sysadmin/.ssh/id_ed25519_terraform"
+
+# Networking Domains & Resolvers Mapping
+lan_domain      = "homelab.local"
+public_domain   = "example.com"
+dns_servers_lan = ["10.0.0.53"]
+dns_servers_wan = ["1.1.1.1", "8.8.8.8"]

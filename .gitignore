@@ -1,0 +1,26 @@
+# Terraform state files
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+
+# Terraform crash logs
+crash.log
+crash.*
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Local secrets file (managed via SOPS locally, never pushed)
+secrets.sops.yml
+
+# Local Terraform directories
+.terraform/
+.terraform.lock.hcl
+
+# Backup and temporary files
+*.backup
+*.bak
+.*.swp
+_*.txt

@@ -1,0 +1,67 @@
+---
+name: Terraform Lint
+
+"on":
+  push:
+    branches:
+      - main
+      - "dev-*"
+
+jobs:
+  terraform-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "~1.15.0"
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          tflint_version: latest
+
+      - name: Run yamllint
+        run: |
+          pip install yamllint --break-system-packages
+          yamllint --strict .
+
+      - name: Terraform Check Formatting
+        run: terraform fmt -check -recursive
+
+      - name: TFLint Init
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint --recursive
+
+      - name: Terraform Init and Validate
+        run: |
+          for dir in gateway forgejo authentik homelab; do
+            if [ -d "$dir" ]; then
+              echo "==> Validating directory: $dir"
+              cd "$dir"
+              terraform init -backend=false
+              terraform validate
+              cd - > /dev/null
+            fi
+          done
+
+      - name: Notification Gotify - Failure
+        if: failure()
+        run: |
+          curl -s -X POST "https://gotify.example.com/message?token=${{ secrets.GOTIFY_TOKEN }}" \
+            -F "title=Terraform CI Pipeline Failed" \
+            -F "message=The Terraform validation pipeline failed on checking formatting or linting standards." \
+            -F "priority=8"
+
+      - name: Notification Gotify - Success
+        if: success()
+        run: |
+          curl -s -X POST "https://gotify.example.com/message?token=${{ secrets.GOTIFY_TOKEN }}" \
+            -F "title=Terraform CI Pipeline Success" \
+            -F "message=The Terraform code is compliant with established validation standards." \
+            -F "priority=0"
