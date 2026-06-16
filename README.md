@@ -1,8 +1,8 @@
+# Homelab Infrastructure as Code - Showcase
+
 > [!WARNING]
 > **Architectural Showcase Only**
 > This repository is strictly an educational portfolio designed to demonstrate Infrastructure as Code (IaC) engineering principles, HCL factorisation logic, and split-workspace patterns. It is intentionally incomplete, heavily anonymized, and stripped of production assets. It is not functional and must not be used for live deployments.
-
-# Homelab Infrastructure as Code - Showcase
 
 ## Architectural Overview
 
